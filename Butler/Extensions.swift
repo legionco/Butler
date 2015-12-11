@@ -10,6 +10,7 @@ import Foundation
 
 // MARK: Graphics and animation
 
+// http://bandes-stor.ch/blog/2015/11/28/help-yourself-to-some-swift/
 extension CGContext {
     static func currentContext() -> CGContext? {
         return UIGraphicsGetCurrentContext()
@@ -26,6 +27,7 @@ extension CAMediaTimingFunction {
 
 // MARK: GCD
 
+// http://bandes-stor.ch/blog/2015/11/28/help-yourself-to-some-swift/
 extension dispatch_queue_t {
 //    mySerialQueue.sync {
 //        print("I’m on the queue!")
@@ -44,6 +46,7 @@ extension dispatch_queue_t {
     }
 }
 
+// http://bandes-stor.ch/blog/2015/11/28/help-yourself-to-some-swift/
 extension dispatch_group_t {
 //    let group = dispatch_group_create()
 //

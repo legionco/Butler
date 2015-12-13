@@ -18,6 +18,7 @@ extension CGContext {
 }
 
 extension CGColorSpace {
+    @available(iOS 9.0, *)
     static let GenericRGB = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB)
 }
 

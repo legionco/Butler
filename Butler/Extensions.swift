@@ -11,25 +11,25 @@ import Foundation
 // MARK: Graphics and animation
 
 // http://bandes-stor.ch/blog/2015/11/28/help-yourself-to-some-swift/
-extension CGContext {
+public extension CGContext {
     static func currentContext() -> CGContext? {
         return UIGraphicsGetCurrentContext()
     }
 }
 
-extension CGColorSpace {
+public extension CGColorSpace {
     @available(iOS 9.0, *)
     static let GenericRGB = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB)
 }
 
-extension CAMediaTimingFunction {
+public extension CAMediaTimingFunction {
     @nonobjc static let EaseInEaseOut = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 }
 
 // MARK: GCD
 
 // http://bandes-stor.ch/blog/2015/11/28/help-yourself-to-some-swift/
-extension dispatch_queue_t {
+public extension dispatch_queue_t {
 //    mySerialQueue.sync {
 //        print("I’m on the queue!")
 //    }
@@ -48,7 +48,7 @@ extension dispatch_queue_t {
 }
 
 // http://bandes-stor.ch/blog/2015/11/28/help-yourself-to-some-swift/
-extension dispatch_group_t {
+public extension dispatch_group_t {
 //    let group = dispatch_group_create()
 //
 //    concurrentQueue.async(group) {

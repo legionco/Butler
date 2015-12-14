@@ -8,6 +8,6 @@
 
 import Foundation
 
-class Butler {
+public class Butler {
 
 }

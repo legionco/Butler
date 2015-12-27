@@ -10,7 +10,7 @@ import Foundation
 
 public class Butler {
     // basic test for valid email string
-    class func emailValid(email: String) -> Bool {
+    public class func emailValid(email: String) -> Bool {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegex)
 

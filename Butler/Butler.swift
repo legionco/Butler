@@ -8,7 +8,7 @@
 
 import Foundation
 
-class Butler {
+public class Butler {
     // basic test for valid email string
     class func emailValid(email: String) -> Bool {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"

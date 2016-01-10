@@ -26,6 +26,17 @@ public extension CAMediaTimingFunction {
     @nonobjc static let EaseInEaseOut = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
 }
 
+public extension UIColor {
+    convenience init(hex: NSInteger) {
+        let red = CGFloat((hex >> 16) & 0xFF) / CGFloat(0xFF)
+        let green = CGFloat((hex >> 8) & 0xFF) / CGFloat(0xFF)
+        let blue = CGFloat((hex >> 0) & 0xFF) / CGFloat(0xFF)
+        let alpha = hex > 0xFFFFFF ? CGFloat((hex >> 24) & 0xFF) / CGFloat(0xFF) : 1
+        self.init(red: red, green: green, blue: blue, alpha: alpha)
+    }
+}
+
+
 // MARK: Image resizing
 
 // updated for Swift2.0 from here: https://github.com/sudocode/ui-image-extension/blob/master/UIImage%2BResize.swift

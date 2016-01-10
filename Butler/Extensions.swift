@@ -36,6 +36,34 @@ public extension UIColor {
     }
 }
 
+// MARK: labels and fonts
+
+extension UILabel {
+    func addCharactersSpacing(spacing:CGFloat, text:String) {
+        let attributedString = NSMutableAttributedString(string: text)
+        attributedString.addAttribute(NSKernAttributeName, value: spacing, range: NSMakeRange(0, text.characters.count))
+        self.attributedText = attributedString
+    }
+}
+
+extension UIFont {
+    var monospacedDigitFont: UIFont {
+        let oldFontDescriptor = fontDescriptor()
+        let newFontDescriptor = oldFontDescriptor.monospacedDigitFontDescriptor
+        return UIFont(descriptor: newFontDescriptor, size: 0)
+    }
+
+}
+
+extension UIFontDescriptor {
+    var monospacedDigitFontDescriptor: UIFontDescriptor {
+        let fontDescriptorFeatureSettings = [[UIFontFeatureTypeIdentifierKey: kNumberSpacingType, UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector]]
+        let fontDescriptorAttributes = [UIFontDescriptorFeatureSettingsAttribute: fontDescriptorFeatureSettings]
+        let fontDescriptor = self.fontDescriptorByAddingAttributes(fontDescriptorAttributes)
+        return fontDescriptor
+    }
+
+}
 
 // MARK: Image resizing
 

@@ -36,6 +36,15 @@ public extension UIColor {
     }
 }
 
+// MARK: views
+
+extension UIView {
+    // requires downcasting to specified type
+    func copyView() -> AnyObject {
+        return NSKeyedUnarchiver.unarchiveObjectWithData(NSKeyedArchiver.archivedDataWithRootObject(self))!
+    }
+}
+
 // MARK: labels and fonts
 
 extension UILabel {

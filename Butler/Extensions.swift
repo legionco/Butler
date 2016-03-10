@@ -74,10 +74,38 @@ extension UIFontDescriptor {
 
 }
 
+// MARK: Strings
+
+extension String {
+    static func random(length: Int = 20) -> String {
+        let base = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        var randomString: String = ""
+
+        for _ in 0..<length {
+            let randomValue = arc4random_uniform(UInt32(base.characters.count))
+            randomString += "\(base[base.startIndex.advancedBy(Int(randomValue))])"
+        }
+
+        return randomString
+    }
+}
+
 // MARK: Image resizing
 
 // updated for Swift2.0 from here: https://github.com/sudocode/ui-image-extension/blob/master/UIImage%2BResize.swift
 public extension UIImage {
+    func squaredImage(dim: CGFloat? = nil) -> UIImage {
+        let side = min(self.size.height, self.size.width)
+
+        let crop = croppedImage(CGRect(x: (self.size.width - side) / 2, y: (self.size.height - side) / 2, width: side, height: side))
+
+        if let dim = dim {
+            return crop.resizedImage(CGSize(width: dim, height: dim), interpolationQuality: .Default)
+        } else {
+            return crop
+        }
+    }
+
     // Returns a copy of this image that is cropped to the given bounds.
     // The bounds will be adjusted using CGRectIntegral.
     // This method ignores the image's imageOrientation setting.

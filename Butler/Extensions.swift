@@ -80,6 +80,11 @@ public extension UITextField {
         self.keyboardType = .EmailAddress
     }
 
+    func configureForPass() {
+        self.keyboardType = .ASCIICapable
+        self.secureTextEntry = true
+    }
+
     func isValidEmail() -> Bool {
         return Butler.emailValid(self.text ?? "")
     }

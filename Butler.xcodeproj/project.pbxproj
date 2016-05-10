@@ -14,6 +14,7 @@
 		D072CF9E1C19245F00DDBA92 /* Butler.swift in Sources */ = {isa = PBXBuildFile; fileRef = D072CF9D1C19245F00DDBA92 /* Butler.swift */; };
 		D072CFB51C1B313C00DDBA92 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = D072CFB41C1B313C00DDBA92 /* Extensions.swift */; };
 		D072CFB71C1B31D500DDBA92 /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = D072CFB61C1B31D500DDBA92 /* Operators.swift */; };
+		D0E0B1BE1CE295A900B49223 /* InputCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0E0B1BD1CE295A900B49223 /* InputCoordinator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,6 +38,7 @@
 		D072CF9D1C19245F00DDBA92 /* Butler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Butler.swift; sourceTree = "<group>"; };
 		D072CFB41C1B313C00DDBA92 /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		D072CFB61C1B31D500DDBA92 /* Operators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
+		D0E0B1BD1CE295A900B49223 /* InputCoordinator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputCoordinator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +85,7 @@
 				D072CF881C19245200DDBA92 /* Info.plist */,
 				D072CF9D1C19245F00DDBA92 /* Butler.swift */,
 				D072CFB41C1B313C00DDBA92 /* Extensions.swift */,
+				D0E0B1BD1CE295A900B49223 /* InputCoordinator.swift */,
 				D01745FF1C7684A000D481E3 /* ViewControllers.swift */,
 				D072CFB61C1B31D500DDBA92 /* Operators.swift */,
 			);
@@ -210,6 +213,7 @@
 				D072CFB51C1B313C00DDBA92 /* Extensions.swift in Sources */,
 				D01746001C7684A000D481E3 /* ViewControllers.swift in Sources */,
 				D072CFB71C1B31D500DDBA92 /* Operators.swift in Sources */,
+				D0E0B1BE1CE295A900B49223 /* InputCoordinator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

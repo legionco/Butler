@@ -75,14 +75,11 @@ extension UIFontDescriptor {
 
 public extension UITextField {
     func configureForEmail() {
-        self.autocapitalizationType = .None
-        self.autocorrectionType = .No
-        self.keyboardType = .EmailAddress
+        InputCoordinator.configureText(self)
     }
 
     func configureForPass() {
-        self.keyboardType = .ASCIICapable
-        self.secureTextEntry = true
+        InputCoordinator.configurePassword(self)
     }
 
     func isValidEmail() -> Bool {

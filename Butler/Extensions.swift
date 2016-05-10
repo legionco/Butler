@@ -75,7 +75,7 @@ extension UIFontDescriptor {
 
 public extension UITextField {
     func configureForEmail() {
-        InputCoordinator.configureText(self)
+        InputCoordinator.configureEmail(self)
     }
 
     func configureForPass() {

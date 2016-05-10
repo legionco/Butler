@@ -38,7 +38,7 @@ public extension UIColor {
 
 // MARK: views
 
-extension UIView {
+public extension UIView {
     // requires downcasting to specified type
     func copyView() -> AnyObject {
         return NSKeyedUnarchiver.unarchiveObjectWithData(NSKeyedArchiver.archivedDataWithRootObject(self))!
@@ -71,7 +71,18 @@ extension UIFontDescriptor {
         let fontDescriptor = self.fontDescriptorByAddingAttributes(fontDescriptorAttributes)
         return fontDescriptor
     }
+}
 
+public extension UITextField {
+    func configureForEmail() {
+        self.autocapitalizationType = .None
+        self.autocorrectionType = .No
+        self.keyboardType = .EmailAddress
+    }
+
+    func isValidEmail() -> Bool {
+        return Butler.emailValid(self.text ?? "")
+    }
 }
 
 // MARK: Strings

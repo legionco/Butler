@@ -8,6 +8,12 @@
 
 import Foundation
 
+//import Butler
+//
+//// this is a workaround to bring the extensions from Butler into
+//// the rest of the project without having to declare `import Butler` everywhere
+//typealias HelloButler = Butler
+
 public class Butler {
     // basic test for valid email string
     public class func emailValid(email: String) -> Bool {

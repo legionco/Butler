@@ -82,6 +82,10 @@ public extension UITextField {
         InputCoordinator.configurePassword(self)
     }
 
+    func configureForPhone() {
+        InputCoordinator.configurePhone(self)
+    }
+
     func isValidEmail() -> Bool {
         return Butler.emailValid(self.text ?? "")
     }

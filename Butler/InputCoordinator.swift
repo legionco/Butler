@@ -21,6 +21,12 @@ public class InputCoordinator: NSObject {
         textField.autocapitalizationType = .None
     }
 
+    static func configurePhone(textField: UITextField) {
+        textField.keyboardType = .PhonePad
+        textField.autocorrectionType = .No
+        textField.autocapitalizationType = .None
+    }
+
     static func configurePassword(textField: UITextField) {
         textField.keyboardType = .ASCIICapable
         textField.autocorrectionType = .No

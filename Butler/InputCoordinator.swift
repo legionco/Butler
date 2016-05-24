@@ -6,7 +6,7 @@
 //  Copyright © 2016 922am Burrito. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 public class InputCoordinator: NSObject {
     static func configureText(textField: UITextField) {
@@ -54,7 +54,7 @@ public class InputCoordinator: NSObject {
         }
     }
 
-    func firstResponder() -> UITextField? {
+    public func firstResponder() -> UITextField? {
         for field in fields {
             if field.isFirstResponder() {
                 return field

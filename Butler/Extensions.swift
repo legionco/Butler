@@ -61,7 +61,6 @@ extension UIFont {
         let newFontDescriptor = oldFontDescriptor.monospacedDigitFontDescriptor
         return UIFont(descriptor: newFontDescriptor, size: 0)
     }
-
 }
 
 extension UIFontDescriptor {

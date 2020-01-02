@@ -78,7 +78,7 @@ extension InputCoordinator: UITextFieldDelegate {
                 finishedBlock()
             }
         } else if fields.contains(textField) {            
-            if let index = fields.index(of: textField) {
+            if let index = fields.firstIndex(of: textField) {
                 fields[index+1].becomeFirstResponder()
             }
         } else {

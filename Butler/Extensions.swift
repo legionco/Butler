@@ -256,11 +256,13 @@ public extension UIImage {
 // MARK: GCD
 
 // http://bandes-stor.ch/blog/2015/11/28/help-yourself-to-some-swift/
-public extension dispatch_queue_t {
+public extension DispatchQueue {
 //    mySerialQueue.sync {
 //        print("I’m on the queue!")
 //    }
-    final func async(block: dispatch_block_t) {
+    /*
+    
+     final func async(block: dispatch_block_t) {
         dispatch_async(self, block)
     }
 
@@ -272,10 +274,12 @@ public extension dispatch_queue_t {
     final func sync(block: dispatch_block_t) {
         dispatch_sync(self, block)
     }
+     
+     */
 }
 
 // http://bandes-stor.ch/blog/2015/11/28/help-yourself-to-some-swift/
-public extension dispatch_group_t {
+public extension DispatchGroup {
 //    let group = dispatch_group_create()
 //
 //    concurrentQueue.async(group) {
@@ -287,8 +291,10 @@ public extension dispatch_group_t {
 //    }
 //    
 //    group.waitForever()
+    /*
     final func waitForever() {
         dispatch_group_wait(self, DISPATCH_TIME_FOREVER)
     }
+ */
 }
 

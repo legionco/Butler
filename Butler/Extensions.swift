@@ -19,11 +19,11 @@ public extension CGContext {
 
 public extension CGColorSpace {
     @available(iOS 9.0, *)
-    static let GenericRGB = CGColorSpaceCreateWithName(kCGColorSpaceGenericRGB)
+    static let GenericRGB = CGColorSpace(name: CGColorSpace.sRGB)
 }
 
 public extension CAMediaTimingFunction {
-    @nonobjc static let EaseInEaseOut = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
+    @nonobjc static let EaseInEaseOut = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
 }
 
 public extension UIColor {
@@ -41,7 +41,7 @@ public extension UIColor {
 public extension UIView {
     // requires downcasting to specified type
     func copyView() -> AnyObject {
-        return NSKeyedUnarchiver.unarchiveObjectWithData(NSKeyedArchiver.archivedDataWithRootObject(self))!
+        return NSKeyedUnarchiver.unarchiveObject(with: NSKeyedArchiver.archivedData(withRootObject: self))! as AnyObject
     }
 }
 
@@ -50,14 +50,14 @@ public extension UIView {
 extension UILabel {
     func addCharactersSpacing(spacing:CGFloat, text:String) {
         let attributedString = NSMutableAttributedString(string: text)
-        attributedString.addAttribute(NSKernAttributeName, value: spacing, range: NSMakeRange(0, text.characters.count))
+        attributedString.addAttribute(NSAttributedString.Key.kern, value: spacing, range: NSMakeRange(0, text.count))
         self.attributedText = attributedString
     }
 }
 
 extension UIFont {
     var monospacedDigitFont: UIFont {
-        let oldFontDescriptor = fontDescriptor()
+        let oldFontDescriptor = fontDescriptor
         let newFontDescriptor = oldFontDescriptor.monospacedDigitFontDescriptor
         return UIFont(descriptor: newFontDescriptor, size: 0)
     }
@@ -65,28 +65,28 @@ extension UIFont {
 
 extension UIFontDescriptor {
     var monospacedDigitFontDescriptor: UIFontDescriptor {
-        let fontDescriptorFeatureSettings = [[UIFontFeatureTypeIdentifierKey: kNumberSpacingType, UIFontFeatureSelectorIdentifierKey: kMonospacedNumbersSelector]]
-        let fontDescriptorAttributes = [UIFontDescriptorFeatureSettingsAttribute: fontDescriptorFeatureSettings]
-        let fontDescriptor = self.fontDescriptorByAddingAttributes(fontDescriptorAttributes)
+        let fontDescriptorFeatureSettings = [[UIFontDescriptor.FeatureKey.featureIdentifier: kNumberSpacingType, UIFontDescriptor.FeatureKey.typeIdentifier: kMonospacedNumbersSelector]]
+        let fontDescriptorAttributes = [UIFontDescriptor.AttributeName.featureSettings: fontDescriptorFeatureSettings]
+        let fontDescriptor = self.addingAttributes(fontDescriptorAttributes)
         return fontDescriptor
     }
 }
 
 public extension UITextField {
     func configureForEmail() {
-        InputCoordinator.configureEmail(self)
+        InputCoordinator.configureEmail(textField: self)
     }
 
     func configureForPass() {
-        InputCoordinator.configurePassword(self)
+        InputCoordinator.configurePassword(textField: self)
     }
 
     func configureForPhone() {
-        InputCoordinator.configurePhone(self)
+        InputCoordinator.configurePhone(textField: self)
     }
 
     func isValidEmail() -> Bool {
-        return Butler.emailValid(self.text ?? "")
+        return Butler.emailValid(email: self.text ?? "")
     }
 }
 
@@ -98,10 +98,9 @@ extension String {
         var randomString: String = ""
 
         for _ in 0..<length {
-            let randomValue = arc4random_uniform(UInt32(base.characters.count))
-            randomString += "\(base[base.startIndex.advancedBy(Int(randomValue))])"
+            let randomValue = arc4random_uniform(UInt32(base.count))
+            randomString += "\(base[base.index(base.startIndex, offsetBy: Int(randomValue))])"
         }
-
         return randomString
     }
 }
@@ -113,10 +112,10 @@ public extension UIImage {
     func squaredImage(dim: CGFloat? = nil) -> UIImage {
         let side = min(self.size.height, self.size.width)
 
-        let crop = croppedImage(CGRect(x: (self.size.width - side) / 2, y: (self.size.height - side) / 2, width: side, height: side))
+        let crop = croppedImage(bounds: CGRect(x: (self.size.width - side) / 2, y: (self.size.height - side) / 2, width: side, height: side))
 
         if let dim = dim {
-            return crop.resizedImage(CGSize(width: dim, height: dim), interpolationQuality: .Default)
+            return crop.resizedImage(newSize: CGSize(width: dim, height: dim), interpolationQuality: .default)
         } else {
             return crop
         }
@@ -126,8 +125,8 @@ public extension UIImage {
     // The bounds will be adjusted using CGRectIntegral.
     // This method ignores the image's imageOrientation setting.
     func croppedImage(bounds: CGRect) -> UIImage {
-        let imageRef:CGImageRef = CGImageCreateWithImageInRect(self.CGImage!, bounds)!
-        return UIImage(CGImage: imageRef)
+        let imageRef:CGImage = self.cgImage!.cropping(to: bounds)!
+        return UIImage(cgImage: imageRef)
     }
 
     // Returns a rescaled copy of the image, taking into account its orientation
@@ -136,116 +135,115 @@ public extension UIImage {
         var drawTransposed:Bool
 
         switch(self.imageOrientation) {
-        case .Left:
+        case .left:
             fallthrough
-        case .LeftMirrored:
+        case .leftMirrored:
             fallthrough
-        case .Right:
+        case .right:
             fallthrough
-        case .RightMirrored:
+        case .rightMirrored:
             drawTransposed = true
             break
         default:
             drawTransposed = false
             break
         }
-
-        return self.resizedImage(
-            newSize,
-            transform: self.transformForOrientation(newSize),
-            drawTransposed: drawTransposed,
-            interpolationQuality: quality
-        )
+        
+        return self.resizedImage(newSize: newSize,
+                                 transform: self.transformForOrientation(newSize: newSize),
+                                 drawTransposed: drawTransposed,
+                                 interpolationQuality: quality)
     }
 
-    func resizedImageWithContentMode(contentMode:UIViewContentMode, bounds:CGSize, interpolationQuality quality:CGInterpolationQuality) -> UIImage {
+    func resizedImageWithContentMode(contentMode:UIView.ContentMode, bounds:CGSize, interpolationQuality quality:CGInterpolationQuality) -> UIImage {
         let horizontalRatio:CGFloat = bounds.width / self.size.width
         let verticalRatio:CGFloat = bounds.height / self.size.height
         var ratio:CGFloat = 1
 
         switch(contentMode) {
-        case .ScaleAspectFill:
+        case .scaleAspectFill:
             ratio = max(horizontalRatio, verticalRatio)
             break
-        case .ScaleAspectFit:
+        case .scaleAspectFit:
             ratio = min(horizontalRatio, verticalRatio)
             break
         default:
             print("Unsupported content mode \(contentMode)")
         }
 
-        let newSize:CGSize = CGSizeMake(self.size.width * ratio, self.size.height * ratio)
-        return self.resizedImage(newSize, interpolationQuality: quality)
+        let newSize:CGSize = CGSize(width: self.size.width * ratio, height: self.size.height * ratio)//CGSizeMake(self.size.width * ratio, self.size.height * ratio)
+        return self.resizedImage(newSize: newSize, interpolationQuality: quality)
     }
 
     func resizedImage(newSize:CGSize, transform:CGAffineTransform, drawTransposed transpose:Bool, interpolationQuality quality:CGInterpolationQuality) -> UIImage {
-        let newRect:CGRect = CGRectIntegral(CGRectMake(0, 0, newSize.width, newSize.height))
-        let transposedRect:CGRect = CGRectMake(0, 0, newRect.size.height, newRect.size.width)
-        let imageRef:CGImageRef = self.CGImage!
+        let newRect:CGRect = CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height).integral
+        let transposedRect:CGRect = CGRect(x: 0, y: 0, width: newRect.size.height, height: newRect.size.width)
+        let imageRef:CGImage = self.cgImage!
 
         // build a context that's the same dimensions as the new size
-        let bitmap:CGContextRef = CGBitmapContextCreate(nil,
-            Int(newRect.size.width),
-            Int(newRect.size.height),
-            CGImageGetBitsPerComponent(imageRef),
-            0,
-            CGImageGetColorSpace(imageRef)!,
-            CGImageAlphaInfo.NoneSkipLast.rawValue//CGImageGetBitmapInfo(imageRef).rawValue
-            )!
+        
+        
+        let bitmap:CGContext = CGContext.init(data: nil,
+                                              width: Int(newRect.size.width),
+                                              height: Int(newRect.size.height),
+                                              bitsPerComponent: imageRef.bitsPerComponent,
+                                              bytesPerRow: 0,
+                                              space: imageRef.colorSpace!,
+                                              bitmapInfo: CGImageAlphaInfo.noneSkipLast.rawValue)!
 
         // rotate and/or flip the image if required by its orientation
-        CGContextConcatCTM(bitmap, transform)
+        bitmap.concatenate(transform)
 
         // set the quality level to use when rescaling
-        CGContextSetInterpolationQuality(bitmap, quality)
+        bitmap.interpolationQuality = quality
 
         // draw into the context; this scales the image
-        CGContextDrawImage(bitmap, transpose ? transposedRect : newRect, imageRef)
+        bitmap.draw(imageRef, in:  transpose ? transposedRect : newRect)
 
         // get the resized image from the context and a UIImage
-        let newImageRef:CGImageRef = CGBitmapContextCreateImage(bitmap)!
-        let newImage:UIImage = UIImage(CGImage: newImageRef)
+        let newImageRef:CGImage = bitmap.makeImage()!
+        let newImage:UIImage = UIImage(cgImage: newImageRef)
 
         return newImage
     }
 
     func transformForOrientation(newSize:CGSize) -> CGAffineTransform {
-        var transform:CGAffineTransform = CGAffineTransformIdentity
+        var transform:CGAffineTransform = .identity
         switch (self.imageOrientation) {
-        case .Down:          // EXIF = 3
+        case .down:          // EXIF = 3
             fallthrough
-        case .DownMirrored:  // EXIF = 4
-            transform = CGAffineTransformTranslate(transform, newSize.width, newSize.height)
-            transform = CGAffineTransformRotate(transform, CGFloat(M_PI))
+        case .downMirrored:  // EXIF = 4
+            transform = transform.translatedBy(x: newSize.width, y: newSize.height)
+            transform = transform.rotated(by: CGFloat(Double.pi))
             break
-        case .Left:          // EXIF = 6
+        case .left:          // EXIF = 6
             fallthrough
-        case .LeftMirrored:  // EXIF = 5
-            transform = CGAffineTransformTranslate(transform, newSize.width, 0)
-            transform = CGAffineTransformRotate(transform, CGFloat(M_PI_2))
+        case .leftMirrored:  // EXIF = 5
+            transform = transform.translatedBy(x: newSize.width, y: 0)
+            transform = transform.rotated(by: CGFloat(Double.pi / 2)) //CGAffineTransformRotate(transform, CGFloat(M_PI_2))
             break
-        case .Right:         // EXIF = 8
+        case .right:         // EXIF = 8
             fallthrough
-        case .RightMirrored: // EXIF = 7
-            transform = CGAffineTransformTranslate(transform, 0, newSize.height)
-            transform = CGAffineTransformRotate(transform, -CGFloat(M_PI_2))
+        case .rightMirrored: // EXIF = 7
+            transform = transform.translatedBy(x: 0, y: newSize.height)
+            transform = transform.rotated(by: -CGFloat(Double.pi / 2))
             break
         default:
             break
         }
 
         switch(self.imageOrientation) {
-        case .UpMirrored:    // EXIF = 2
+        case .upMirrored:    // EXIF = 2
             fallthrough
-        case .DownMirrored:  // EXIF = 4
-            transform = CGAffineTransformTranslate(transform, newSize.width, 0)
-            transform = CGAffineTransformScale(transform, -1, 1)
+        case .downMirrored:  // EXIF = 4
+            transform = transform.translatedBy(x: newSize.width, y: 0)
+            transform = transform.scaledBy(x: -1, y: 1)
             break
-        case .LeftMirrored:  // EXIF = 5
+        case .leftMirrored:  // EXIF = 5
             fallthrough
-        case .RightMirrored: // EXIF = 7
-            transform = CGAffineTransformTranslate(transform, newSize.height, 0)
-            transform = CGAffineTransformScale(transform, -1, 1)
+        case .rightMirrored: // EXIF = 7
+            transform = transform.translatedBy(x: newSize.height, y: 0)
+            transform = transform.scaledBy(x: -1, y: 1)
             break
         default:
             break

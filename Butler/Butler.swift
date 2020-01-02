@@ -20,7 +20,7 @@ public class Butler {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}"
         let emailTest = NSPredicate(format: "SELF MATCHES %@", emailRegex)
 
-        return emailTest.evaluateWithObject(email)
+        return emailTest.evaluate(with: email)
     }
 
     // easy to use delays

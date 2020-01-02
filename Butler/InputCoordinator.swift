@@ -10,28 +10,28 @@ import UIKit
 
 public class InputCoordinator: NSObject {
     static func configureText(textField: UITextField) {
-        textField.keyboardType = .ASCIICapable
-        textField.autocorrectionType = .Yes
-        textField.autocapitalizationType = .None
+        textField.keyboardType = .asciiCapable
+        textField.autocorrectionType = .yes
+        textField.autocapitalizationType = .none
     }
 
     static func configureEmail(textField: UITextField) {
-        textField.keyboardType = .EmailAddress
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
+        textField.keyboardType = .emailAddress
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
     }
 
     static func configurePhone(textField: UITextField) {
-        textField.keyboardType = .PhonePad
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
+        textField.keyboardType = .phonePad
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
     }
 
     static func configurePassword(textField: UITextField) {
-        textField.keyboardType = .ASCIICapable
-        textField.autocorrectionType = .No
-        textField.autocapitalizationType = .None
-        textField.secureTextEntry = true
+        textField.keyboardType = .asciiCapable
+        textField.autocorrectionType = .no
+        textField.autocapitalizationType = .none
+        textField.isSecureTextEntry = true
     }
 
     var fields: [UITextField] = []
@@ -45,18 +45,18 @@ public class InputCoordinator: NSObject {
             if let subview = subview as? UITextField {
                 fields.append(subview)
                 subview.delegate = self
-                subview.returnKeyType = .Next
+                subview.returnKeyType = .next
             }
         }
 
         if let last = fields.last {
-            last.returnKeyType = .Done
+            last.returnKeyType = .done
         }
     }
 
     public func firstResponder() -> UITextField? {
         for field in fields {
-            if field.isFirstResponder() {
+            if field.isFirstResponder {
                 return field
             }
         }

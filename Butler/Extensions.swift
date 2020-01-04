@@ -291,10 +291,10 @@ public extension DispatchGroup {
 //    }
 //    
 //    group.waitForever()
-    /*
+    
     final func waitForever() {
-        dispatch_group_wait(self, DISPATCH_TIME_FOREVER)
+        _ = self.wait(timeout:DispatchTime.distantFuture)        
     }
- */
+ 
 }
 
